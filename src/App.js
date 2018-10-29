@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './css/pure-min.css';
+import './css/side-menu.css';
+import {Link} from 'react-router-dom';
 
 class App extends Component {
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div id="layout">
+      <a href="menu" id="menuLink" className="menu-link">
+          <span></span>
+      </a>
+  
+      <div id="menu">
+          <div className="pure-menu">  
+              <ul className="pure-menu-list">
+                  <li className="pure-menu-item"><Link to="/" className="pure-menu-link">Home</Link></li>
+  
+                  <li className="pure-menu-item">
+                      <Link to="/pagamentos" className="pure-menu-link">Pagamentos</Link>
+                  </li>
+  
+              </ul>
+          </div>
       </div>
+  
+    <div id="main">
+        
+        {this.props.children}
+
+    </div>
+  </div>
+
     );
   }
 }
