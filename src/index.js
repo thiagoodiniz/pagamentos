@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import {formularioPagamentos} from './pagamentos';
+import pagamentosBox from './pagamentos';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 
 ReactDOM.render(
@@ -10,7 +10,7 @@ ReactDOM.render(
         <div>
             <App>
                 <Route path="/"/>
-                <Route path="/pagamentos" component={formularioPagamentos}/>
+                <Route path="/pagamentos" component={pagamentosBox}/>
             </App>
         </div>
     </Router>
