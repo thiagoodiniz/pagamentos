@@ -1,19 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import pagamentosBox from './pagamentos';
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import './App.css';
+//import App from './App';
+//import pagamentosBox from './pagamentos';
+//import { BrowserRouter as Router, Route} from 'react-router-dom';
+import AppPagamentos from './AppPagamentosRedux';
 
-ReactDOM.render(
-    <Router>
-        <div>
-            <App>
-                <Route path="/"/>
-                <Route path="/pagamentos" component={pagamentosBox}/>
-            </App>
-        </div>
-    </Router>
-    , document.getElementById('root')
+ReactDOM.render(<AppPagamentos/>, document.getElementById('root')
 );
 

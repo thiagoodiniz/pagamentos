@@ -4,6 +4,7 @@ import InputCustomizado from'./componentes/InputCustomizado';
 import axios from 'axios';
 import TratadorErros from './TratadorErros';
 import PubSub from 'pubsub-js';
+import Loading from './css/loading.gif';
 
 class FormularioPagamentos extends Component{
 
@@ -36,7 +37,6 @@ constructor(){
                 new TratadorErros.publicaErros(erro.response.data);
             }
          });
-
  }
 
   render(){
@@ -94,60 +94,57 @@ class TabelaPegamentos extends Component{
             })
     }
 
-    excluirPagamento(idPagamento){
-        console.log(`excluindo pagamento ${idPagamento}`);
-        
-        axios.delete(`http://localhost:2000/pagamentos/pagamento/${idPagamento}`)
-            .then(result =>{
-                console.log('Pagamento excluido');
-                PubSub.publish('atualiza-lista-pagamentos');
-            })
-            .catch(erro =>{
-                    console.log('houve um erro');
-                    console.log(erro);
-            })
-    }
-
     render(){
-        return(
-            <table className="pure-table">
-                <thead>
-                    <tr>
-                        <th>Forma Pagamento</th>
-                        <th>Valor</th>
-                        <th>Moeda</th>
-                        <th>Descrição</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {
-                        this.props.listaPagamentos.map(pagamento =>{
-                            return( 
-                                <tr key={pagamento.id} className="pure-table-odd">
-                                    <td>{pagamento.forma_pagamento}</td>
-                                    <td>{pagamento.valor}</td>
-                                    <td>{pagamento.moeda}</td>
-                                    <td>{pagamento.descricao}</td>
-                                    <td>{pagamento.status}</td>
-                                    <td>              
-                                        {pagamento.status === 'CRIADO' &&
-                                          <div>                           
-                                            <button onClick={()=>{this.confirmaPagamento(pagamento.id)}} className="button-success pure-button">Confirmar</button>
-                                            <button onClick={()=>{this.cancelarPagamento(pagamento.id)}} className="button-error pure-button">Cancelar</button>
-                                          </div>
-                                         }
-                                   </td>
-                                </tr>
-                            );
-                        })
-                    }
-
-                </tbody>
-            </table>
-        );
+        if(this.props.isLoading){
+            return(
+             <div>   
+                <label>Carregando a lista de pagamentos</label>
+             <div>
+               <img src={Loading} alt="Carregando lista de pagamentos"/>
+              </div>
+              </div> 
+            )    
+        }else{
+            return(
+                <table className="pure-table">
+                    <thead>
+                        <tr>
+                            <th>Forma Pagamento</th>
+                            <th>Valor</th>
+                            <th>Moeda</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        {   
+                            this.props.listaPagamentos.map(pagamento =>{
+                                return( 
+                                    <tr key={pagamento.id} className="pure-table-odd">
+                                        <td>{pagamento.forma_pagamento}</td>
+                                        <td>{pagamento.valor}</td>
+                                        <td>{pagamento.moeda}</td>
+                                        <td>{pagamento.descricao}</td>
+                                        <td>{pagamento.status}</td>
+                                        <td>              
+                                            {pagamento.status === 'CRIADO' &&
+                                              <div>                           
+                                                <button onClick={()=>{this.confirmaPagamento(pagamento.id)}} className="button-success pure-button">Confirmar</button>
+                                                <button onClick={()=>{this.cancelarPagamento(pagamento.id)}} className="button-error pure-button">Cancelar</button>
+                                              </div>
+                                             }
+                                       </td>
+                                    </tr>
+                                );
+                            })
+                        }
+    
+                    </tbody>
+                </table>
+            );
+        }
     }
 }
 
@@ -155,22 +152,23 @@ export default class pagamentosBox extends Component{
 
     constructor(){
         super();
-        this.state = {listaPagamentos: []};
+        this.state = {listaPagamentos: [], isLoading: true};
     }
 
     componentDidMount(){
 
         this.buscaLista();
 
-        PubSub.subscribe('atualiza-lista-pagamentos', function(){
+        PubSub.subscribe('atualiza-lista-pagamentos', () => {
+            this.setState({listaPagamentos: [], isLoading: true});
             this.buscaLista();
-        }.bind(this));
+        })
     }
 
     buscaLista(){
         axios.get('http://localhost:2000/pagamentos/lista')
             .then(lista => { 
-                this.setState({listaPagamentos: lista.data});   
+                this.setState({listaPagamentos: lista.data, isLoading: false});   
             })
             .catch(erro =>{
                 console.log(erro);
@@ -185,7 +183,7 @@ export default class pagamentosBox extends Component{
                 </div>
                 <div className="content">
                         <FormularioPagamentos/>
-                        <TabelaPegamentos listaPagamentos={this.state.listaPagamentos}/>
+                        <TabelaPegamentos listaPagamentos={this.state.listaPagamentos} isLoading={this.state.isLoading}/>
                 </div>
             </div>
         );
