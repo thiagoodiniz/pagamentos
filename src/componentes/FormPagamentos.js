@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Form, Input, TextArea, Button, Select} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import {connect} from 'react-redux';
+import {inserePagamento} from '../store/actions/pagamentosAction';
 
 const opcoesPagamento = [
     { key: 'DEBITO', text: 'DEBITO', value: 'DEBITO' },
@@ -22,11 +24,6 @@ export class FormPagamentos extends Component {
         this.setValor = this.setValor.bind(this);
         this.selectFormaPagamento = this.selectFormaPagamento.bind(this);
         this.selectMoeda = this.selectMoeda.bind(this);
-        this.enviaDados = this.enviaDados.bind(this);
-    }
-
-    enviaDados(){
-        console.log(this.state);
     }
 
     setValor(e){
@@ -87,7 +84,7 @@ export class FormPagamentos extends Component {
                     <Form.Field
                         control={Button}
                         content='Enviar os dados'
-                        onClick={this.enviaDados}
+                        onClick={() => {this.props.inserePagamento(this.state)}}
                     />
                 </Form>
             </div>
@@ -95,4 +92,11 @@ export class FormPagamentos extends Component {
     }
 }
 
-export default FormPagamentos;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        inserePagamento : (pagamento) => {dispatch(inserePagamento(pagamento))}
+    }
+    
+}
+
+export default connect(null, mapDispatchToProps)(FormPagamentos);
