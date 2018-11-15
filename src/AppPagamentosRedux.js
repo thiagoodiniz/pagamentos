@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import FormPagamentos    from './componentes/FormPagamentos';
-import {ListaPagamentos} from './componentes/ListaPagamentos';
+import ListaPagamentos from './componentes/ListaPagamentos';
 import {Provider} from 'react-redux';
 import store from './store';
 

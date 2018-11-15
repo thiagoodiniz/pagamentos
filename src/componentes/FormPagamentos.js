@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Form, Input, TextArea, Button, Select} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {connect} from 'react-redux';
-import {inserePagamento} from '../store/actions/pagamentosAction';
+import {inserePagamento} from '../store/actions/inserePagamentosAction';
+import {setValorCampo} from '../store/actions/formPagamentosAction';
 
 const opcoesPagamento = [
     { key: 'DEBITO', text: 'DEBITO', value: 'DEBITO' },
@@ -21,20 +22,20 @@ export class FormPagamentos extends Component {
     constructor(){
         super();
         this.state = {forma_pagamento:'', moeda:'', valor:'', descricao:''}
-        this.setValor = this.setValor.bind(this);
+        this.setValorCampo = this.setValorCampo.bind(this);
         this.selectFormaPagamento = this.selectFormaPagamento.bind(this);
         this.selectMoeda = this.selectMoeda.bind(this);
     }
 
-    setValor(e){
-        this.setState({[e.target.id]: e.target.value});
+    setValorCampo(e){
+        this.props.setValorCampo(e.target.id, e.target.value);
     }
 
     selectFormaPagamento(e){   
-        this.setState({forma_pagamento: e.target.childNodes[0].textContent});
+        this.props.setValorCampo('forma_pagamento', e.target.childNodes[0].textContent);
     }
     selectMoeda(e){
-        this.setState({moeda: e.target.childNodes[0].textContent});
+        this.props.setValorCampo('moeda', e.target.childNodes[0].textContent);
     }
     
     render(){
@@ -50,7 +51,7 @@ export class FormPagamentos extends Component {
                         placeholder='Selecione...'
                         search
                         searchInput='forma_pagamento'
-                        value={this.state.forma_pagamento}
+                        value={this.props.pagamento.forma_pagamento}
                         onChange={this.selectFormaPagamento}
                     />
                     <Form.Field
@@ -60,7 +61,7 @@ export class FormPagamentos extends Component {
                         placeholder='Selecione...'
                         search
                         id='moeda'
-                        value={this.state.moeda}
+                        value={this.props.pagamento.moeda}
                         onChange={this.selectMoeda}
                     />
                     <Form.Field
@@ -68,8 +69,8 @@ export class FormPagamentos extends Component {
                         control={Input}
                         label='Valor'
                         placeholder='Digite o valor'
-                        value={this.state.valor}
-                        onChange={this.setValor}
+                        value={this.props.pagamento.valor}
+                        onChange={this.setValorCampo}
                     />
                     </Form.Group>
                     <Form.Field
@@ -78,13 +79,13 @@ export class FormPagamentos extends Component {
                         control={TextArea}
                         label='Descrição do pagamento'  
                         placeholder='Digite a descrição'
-                        value={this.state.descricao}
-                        onChange={this.setValor}
+                        value={this.props.pagamento.descricao}
+                        onChange={this.setValorCampo}
                         />
                     <Form.Field
                         control={Button}
                         content='Enviar os dados'
-                        onClick={() => {this.props.inserePagamento(this.state)}}
+                        onClick={() => {this.props.inserePagamento(this.props.pagamento)}}
                     />
                 </Form>
             </div>
@@ -92,11 +93,18 @@ export class FormPagamentos extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        pagamento: state.alteraForm.pagamento
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
-        inserePagamento : (pagamento) => {dispatch(inserePagamento(pagamento))}
+        inserePagamento : (pagamento) => {dispatch(inserePagamento(pagamento))},
+        setValorCampo: (campo, valor) => {dispatch(setValorCampo(campo, valor))}
     }
     
 }
 
-export default connect(null, mapDispatchToProps)(FormPagamentos);
+export default connect(mapStateToProps, mapDispatchToProps)(FormPagamentos);
