@@ -1,34 +1,37 @@
 
 const INITIAL_STATE = {
-    listaPagamentos: [],
     carregando: false,
-    erro: false
+    erro: false,
+    erros: []
 }
 
-export default function inserePagamento(state = INITIAL_STATE, action){
+export function inserePagamento(state = INITIAL_STATE, action){
 
     switch(action.type){
+
         case 'INSERE_PAGAMENTO_INICIO':
             return {
                 carregando: true,
-                erro: false
+                erro: false,
+                erros: []
             }
             
         case 'INSERE_PAGAMENTO_SUCESSO':
             return {
-                listaPagamentos: action.listaPagamentos,
                 carregando: false,
-                erro: false
+                erro: false,
+                erros: []
+
             }
 
         case 'INSERE_PAGAMENTO_ERRO':
             return {
                 carregando: false,
-                erro: true
+                erro: true,
+                erros: action.erros
             }
 
         default: return state
 
     }
-
 }
