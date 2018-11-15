@@ -1,9 +1,11 @@
 
 import {combineReducers} from 'redux';
-import pagamentosReducer from './pagamentosReducer';
+import {inserePagamento} from './inserePagamentoReducer';
+import {alteraForm} from './formPagamentoReducer';
+import listaPagamentos from './listaPagamentosReducer';
 
 const rootReducer = combineReducers({
-    pagamentosReducer
+    inserePagamento, alteraForm, listaPagamentos
 });
 
 export default rootReducer;
