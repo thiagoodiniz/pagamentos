@@ -47,11 +47,21 @@ export class ListaPagamentos extends Component {
                 </Table>
                 {   
                     this.props.listaPagamentos.carregando &&(
-                        <div class="ui active centered inline loader"></div>
+                        <div className="ui active centered inline loader"></div>
+                    )
+                }
+                {   
+                    this.props.listaPagamentos.erro &&(
+                        <div className="ui negative message transition">
+                            <i className="close icon"></i>
+                        <div className="header">
+                           Não foi possível obter a lista de negociações
+                        </div>
+                        </div>
                     )
                 }
             </div>
-        );
+        )
     }
 }
 

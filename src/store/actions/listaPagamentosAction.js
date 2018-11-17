@@ -19,7 +19,7 @@ export const buscaPagamentosSucesso = (listaPagamentos) => {
 
 export const buscaPagamentosErro = (erro) => {
     return {
-        type: 'BUSCA_PAGAMENTOS_SUCESSO',
+        type: 'BUSCA_PAGAMENTOS_ERRO',
         listaPagamentos: [],
         carregando: false,
         erro: true        
