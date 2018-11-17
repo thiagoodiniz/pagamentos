@@ -2,7 +2,7 @@
 const INITIAL_STATE = {
     carregando: false,
     erro: false,
-    erros: []
+    camposComErro: []
 }
 
 export function inserePagamento(state = INITIAL_STATE, action){
@@ -13,14 +13,14 @@ export function inserePagamento(state = INITIAL_STATE, action){
             return {
                 carregando: true,
                 erro: false,
-                erros: []
+                camposComErro: []
             }
             
         case 'INSERE_PAGAMENTO_SUCESSO':
             return {
                 carregando: false,
                 erro: false,
-                erros: []
+                camposComErro: []
 
             }
 
@@ -28,7 +28,7 @@ export function inserePagamento(state = INITIAL_STATE, action){
             return {
                 carregando: false,
                 erro: true,
-                erros: action.erros
+                camposComErro: action.camposComErro
             }
 
         default: return state

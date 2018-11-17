@@ -19,12 +19,11 @@ const opcoesPagamento = [
 
 export class FormPagamentos extends Component {
     
-    constructor(){
-        super();
-        this.state = {forma_pagamento:'', moeda:'', valor:'', descricao:''}
+    constructor(props){
+        super(props);
         this.setValorCampo = this.setValorCampo.bind(this);
         this.selectFormaPagamento = this.selectFormaPagamento.bind(this);
-        this.selectMoeda = this.selectMoeda.bind(this);
+        this.selectMoeda = this.selectMoeda.bind(this);    
     }
 
     setValorCampo(e){
@@ -37,7 +36,7 @@ export class FormPagamentos extends Component {
     selectMoeda(e){
         this.props.setValorCampo('moeda', e.target.childNodes[0].textContent);
     }
-    
+
     render(){
         return(
             <div className='form-pagamentos'>
@@ -45,31 +44,32 @@ export class FormPagamentos extends Component {
                 <Form size='tiny'>
                     <Form.Group>
                     <Form.Field 
+                        error={this.props.inserePagamentosState.camposComErro.includes('pagamento.forma_pagamento')}
                         control={Select}
                         options={opcoesPagamento}
                         label={{ children: 'Forma de Pagamento', htmlFor: 'forma_pagamento' }}
                         placeholder='Selecione...'
-                        search
                         searchInput='forma_pagamento'
-                        value={this.props.pagamento.forma_pagamento}
+                        value={this.props.alteraForm.pagamento.forma_pagamento}
                         onChange={this.selectFormaPagamento}
                     />
                     <Form.Field
+                        error={this.props.inserePagamentosState.camposComErro.includes('pagamento.moeda')}
                         control={Select}
                         options={tiposMoedas}
                         label={{ children: 'Moeda', htmlFor: 'moeda' }}
                         placeholder='Selecione...'
-                        search
                         id='moeda'
-                        value={this.props.pagamento.moeda}
+                        value={this.props.alteraForm.pagamento.moeda}
                         onChange={this.selectMoeda}
                     />
                     <Form.Field
+                        error={this.props.inserePagamentosState.camposComErro.includes('pagamento.valor')}
                         id='valor'
                         control={Input}
                         label='Valor'
                         placeholder='Digite o valor'
-                        value={this.props.pagamento.valor}
+                        value={this.props.alteraForm.pagamento.valor}
                         onChange={this.setValorCampo}
                     />
                     </Form.Group>
@@ -79,13 +79,13 @@ export class FormPagamentos extends Component {
                         control={TextArea}
                         label='Descrição do pagamento'  
                         placeholder='Digite a descrição'
-                        value={this.props.pagamento.descricao}
+                        value={this.props.alteraForm.pagamento.descricao}
                         onChange={this.setValorCampo}
                         />
                     <Form.Field
                         control={Button}
                         content='Enviar os dados'
-                        onClick={() => {this.props.inserePagamento(this.props.pagamento)}}
+                        onClick={() => {this.props.inserePagamento(this.props.alteraForm.pagamento)}}
                     />
                 </Form>
             </div>
@@ -95,8 +95,9 @@ export class FormPagamentos extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        pagamento: state.alteraForm.pagamento
-    }
+        alteraForm: state.alteraForm,
+        inserePagamentosState: state.inserePagamento
+        }
 }
 
 const mapDispatchToProps = (dispatch) => {
