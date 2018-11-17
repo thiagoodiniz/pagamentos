@@ -7,14 +7,13 @@ import buscaPagamentos from '../store/actions/listaPagamentosAction';
 export class ListaPagamentos extends Component {
 
     renderLinhaPagamento(pagamento){
-        console.log(pagamento);
         return(
             <Table.Row key={pagamento.id}>
                 <Table.Cell>{pagamento.forma_pagamento}</Table.Cell>
                 <Table.Cell>{pagamento.moeda}</Table.Cell>
                 <Table.Cell>{pagamento.valor}</Table.Cell>
                 <Table.Cell>{pagamento.descricao}</Table.Cell>
-                <Table.Cell>{pagamento.data}</Table.Cell>
+                <Table.Cell>{pagamento.status}</Table.Cell>
             </Table.Row>
         );
     }
@@ -27,6 +26,7 @@ export class ListaPagamentos extends Component {
         return(
             <div className='lista-pagamentos'>
                 <h1>Lista de pagamentos</h1>
+    
                 <Table singleLine>
                     <Table.Header>
                     <Table.Row>
@@ -34,17 +34,22 @@ export class ListaPagamentos extends Component {
                         <Table.HeaderCell>Moeda</Table.HeaderCell>
                         <Table.HeaderCell>Valor</Table.HeaderCell>
                         <Table.HeaderCell>Descrição</Table.HeaderCell>
-                        <Table.HeaderCell>Data</Table.HeaderCell>
+                        <Table.HeaderCell>Status</Table.HeaderCell>
                     </Table.Row>
                     </Table.Header>
     
                     <Table.Body>
-                        {this.props.listaPagamentos.map((pagamento) => {
+                        {this.props.listaPagamentos.listaPagamentos.map((pagamento) => {
                             return this.renderLinhaPagamento(pagamento)
                         })}
  
                     </Table.Body>
                 </Table>
+                {   
+                    this.props.listaPagamentos.carregando &&(
+                        <div class="ui active centered inline loader"></div>
+                    )
+                }
             </div>
         );
     }
@@ -52,10 +57,7 @@ export class ListaPagamentos extends Component {
 
 const mapStateToProps = (state) => {
     return{
-        listaPagamentos: state.listaPagamentos.listaPagamentos,
-        carregando: state.listaPagamentos.carregando,
-        erro: state.listaPagamentos.erro,
-        erros: state.listaPagamentos.erros
+        listaPagamentos: state.listaPagamentos
     }
 }
 
