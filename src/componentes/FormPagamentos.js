@@ -44,7 +44,7 @@ export class FormPagamentos extends Component {
                 <Form size='tiny'>
                     <Form.Group>
                     <Form.Field 
-                        error={this.props.inserePagamentosState.camposComErro.includes('pagamento.forma_pagamento')}
+                        error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.forma_pagamento')}
                         control={Select}
                         options={opcoesPagamento}
                         label={{ children: 'Forma de Pagamento', htmlFor: 'forma_pagamento' }}
@@ -54,7 +54,7 @@ export class FormPagamentos extends Component {
                         onChange={this.selectFormaPagamento}
                     />
                     <Form.Field
-                        error={this.props.inserePagamentosState.camposComErro.includes('pagamento.moeda')}
+                        error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.moeda')}
                         control={Select}
                         options={tiposMoedas}
                         label={{ children: 'Moeda', htmlFor: 'moeda' }}
@@ -64,7 +64,7 @@ export class FormPagamentos extends Component {
                         onChange={this.selectMoeda}
                     />
                     <Form.Field
-                        error={this.props.inserePagamentosState.camposComErro.includes('pagamento.valor')}
+                        error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.valor')}
                         id='valor'
                         control={Input}
                         label='Valor'
@@ -82,6 +82,25 @@ export class FormPagamentos extends Component {
                         value={this.props.alteraForm.pagamento.descricao}
                         onChange={this.setValorCampo}
                         />
+                    {   
+                        this.props.inserePagamentosState.carregando &&(
+                            <div className="ui active centered inline loader"></div>
+                        )
+                    }
+                    {   
+                        this.props.inserePagamentosState.erro &&(
+                            <div className="ui negative message transition" style={{width: '65%'}}>
+                                <div className="header">
+                                    Ocorreu um erro ao inserir o pagamento.
+                                </div>
+                                <ul className="list">
+                                {this.props.inserePagamentosState.erros.msg.map((msg) => {
+                                    return <li key={msg}>{msg}</li>
+                                })}
+                                </ul>
+                            </div>
+                        )
+                    }
                     <Form.Field
                         control={Button}
                         content='Enviar os dados'

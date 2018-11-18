@@ -7,7 +7,10 @@ import {limpaForm} from './formPagamentosAction';
          type: 'INSERE_PAGAMENTO_INICIO',
          carregando: true,
          erro: false,
-         camposComErro: []
+         erros: {
+            camposComErro: [],
+            msg: []
+        }
      }
  }
 
@@ -16,16 +19,22 @@ import {limpaForm} from './formPagamentosAction';
         type: 'INSERE_PAGAMENTO_SUCESSO',
         carregando: false,
         erro: false,
-        camposComErro: []
+        erros: {
+            camposComErro: [],
+            msg: []
+        }
     }
  }
 
- export const inserePagamentoErro = (erros) => {
+ export const inserePagamentoErro = (camposComErro, msg) => {
      return {
          type: 'INSERE_PAGAMENTO_ERRO',
          carregando: false, 
          erro: true,
-         camposComErro: erros
+         erros: {
+             camposComErro: camposComErro,
+             msg: msg
+         }
      }
  }
 
@@ -41,11 +50,17 @@ import {limpaForm} from './formPagamentosAction';
                 })
                 .catch(erro =>{
                     console.log('Erro ao inserir um novo pagamento');
-                    console.log(erro.response.data);
-                    let camposComErro = erro.response.data.map((erro => {
-                        return erro.param;
-                    }))
-                    dispatch(inserePagamentoErro(camposComErro))   
+                    if(erro.response && erro.response.status === 400){
+                        let camposComErro = erro.response.data.map(erro => {
+                            return erro.param;
+                        });
+                        let msg = erro.response.data.map((erro) => {
+                            return erro.msg
+                        })
+                        dispatch(inserePagamentoErro(camposComErro, msg))
+                    }else{
+                        dispatch(inserePagamentoErro([], []))
+                    }
                 }); 
      }
  }
