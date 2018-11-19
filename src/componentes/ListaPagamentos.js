@@ -3,6 +3,7 @@ import {Table} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {connect} from 'react-redux';
 import buscaPagamentos from '../store/actions/listaPagamentosAction';
+import {confirmaPagamento, cancelaPagamento, limpaState} from '../store/actions/alteraPagamentoAction';
 
 export class ListaPagamentos extends Component {
 
@@ -14,6 +15,15 @@ export class ListaPagamentos extends Component {
                 <Table.Cell>{pagamento.valor}</Table.Cell>
                 <Table.Cell>{pagamento.descricao}</Table.Cell>
                 <Table.Cell>{pagamento.status}</Table.Cell>
+                <Table.Cell>
+                    {pagamento.status === 'CRIADO' && 
+                        <div>
+                            <i title="Cancelar pagamento" onClick={() => {this.props.cancelaPagamento(pagamento.id)}} style={{cursor:'pointer'}} className="red times icon"></i>
+                            <i title="Confirmar pagamento" onClick={() => {this.props.confirmaPagamento(pagamento.id)}} style={{cursor:'pointer'}}className="green check icon"></i>
+                        </div>
+                    }
+
+                </Table.Cell>
             </Table.Row>
         );
     }
@@ -35,6 +45,7 @@ export class ListaPagamentos extends Component {
                         <Table.HeaderCell>Valor</Table.HeaderCell>
                         <Table.HeaderCell>Descrição</Table.HeaderCell>
                         <Table.HeaderCell>Status</Table.HeaderCell>
+                        <Table.HeaderCell>Ações</Table.HeaderCell>
                     </Table.Row>
                     </Table.Header>
     
@@ -60,6 +71,15 @@ export class ListaPagamentos extends Component {
                         </div>
                     )
                 }
+                {   this.props.alteraPagamentos.msg && (
+                                        <div className="ui info message">
+                                        <i className="close icon" onClick={this.props.removeMsg}></i>
+                                        <div className="header">
+                                            {this.props.alteraPagamentos.msg}
+                                        </div>
+                                    </div>
+                    )
+                }
             </div>
         )
     }
@@ -67,13 +87,17 @@ export class ListaPagamentos extends Component {
 
 const mapStateToProps = (state) => {
     return{
-        listaPagamentos: state.listaPagamentos
+        listaPagamentos: state.listaPagamentos,
+        alteraPagamentos: state.alteraPagamentos
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        buscaListaPagamentos: () => {dispatch(buscaPagamentos())}
+        buscaListaPagamentos: () => {dispatch(buscaPagamentos())},
+        confirmaPagamento: (idPagamento) => {dispatch(confirmaPagamento(idPagamento))},
+        cancelaPagamento: (idPagamento) => {dispatch(cancelaPagamento(idPagamento))},
+        removeMsg: () => {dispatch(limpaState())}
     }
 }
 

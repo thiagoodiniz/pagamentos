@@ -41,7 +41,7 @@ export class FormPagamentos extends Component {
         return(
             <div className='form-pagamentos'>
                 <h1>Cadastrar Pagamento</h1>
-                <Form size='tiny'>
+                <Form size='small'>
                     <Form.Group>
                     <Form.Field 
                         error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.forma_pagamento')}
