@@ -7,6 +7,7 @@ import {limpaForm} from './formPagamentosAction';
          type: 'INSERE_PAGAMENTO_INICIO',
          carregando: true,
          erro: false,
+         msg: '',
          erros: {
             camposComErro: [],
             msg: []
@@ -14,11 +15,12 @@ import {limpaForm} from './formPagamentosAction';
      }
  }
 
- export const inserePagamentoSucesso = () => {
+ export const inserePagamentoSucesso = (msg) => {
     return {
         type: 'INSERE_PAGAMENTO_SUCESSO',
         carregando: false,
         erro: false,
+        msg: msg,
         erros: {
             camposComErro: [],
             msg: []
@@ -31,11 +33,18 @@ import {limpaForm} from './formPagamentosAction';
          type: 'INSERE_PAGAMENTO_ERRO',
          carregando: false, 
          erro: true,
+         msg: '',
          erros: {
              camposComErro: camposComErro,
              msg: msg
          }
      }
+ }
+
+ export const limpa = () => {
+    return {
+        type: 'LIMPA_MSG'
+    }
  }
 
  export const inserePagamento = (pagamento) =>{
@@ -44,7 +53,7 @@ import {limpaForm} from './formPagamentosAction';
             axios.post('http://localhost:2000/pagamentos/pagamento', {pagamento: pagamento})
                 .then(result =>{
                     console.log('Sucesso ao inserir um novo pagamento');
-                    dispatch(inserePagamentoSucesso(result))
+                    dispatch(inserePagamentoSucesso('Pagamento inserido com sucesso'))
                     dispatch(limpaForm())
                     dispatch(buscaPagamentos())
                 })
@@ -64,3 +73,9 @@ import {limpaForm} from './formPagamentosAction';
                 }); 
      }
  }
+
+ export const limpaMsg = () => {
+    return dispatch => {
+        dispatch(limpa())
+    }
+} 

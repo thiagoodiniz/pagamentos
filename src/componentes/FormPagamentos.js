@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Form, Input, TextArea, Button, Select} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {connect} from 'react-redux';
-import {inserePagamento} from '../store/actions/inserePagamentosAction';
+import {inserePagamento, limpaMsg} from '../store/actions/inserePagamentosAction';
 import {setValorCampo} from '../store/actions/formPagamentosAction';
 
 const opcoesPagamento = [
@@ -90,6 +90,7 @@ export class FormPagamentos extends Component {
                     {   
                         this.props.inserePagamentosState.erro &&(
                             <div className="ui negative message transition" style={{width: '65%'}}>
+                                <i className="close icon" onClick={this.props.removeMsg}></i>
                                 <div className="header">
                                     Ocorreu um erro ao inserir o pagamento.
                                 </div>
@@ -98,6 +99,15 @@ export class FormPagamentos extends Component {
                                     return <li key={msg}>{msg}</li>
                                 })}
                                 </ul>
+                            </div>
+                        )
+                    }
+                    {   this.props.inserePagamentosState.msg && (
+                            <div className="ui info message" style={{width: '65%'}}>
+                                <i className="close icon" onClick={this.props.removeMsg}></i>
+                                <div className="header">
+                                    {this.props.inserePagamentosState.msg}
+                                </div>
                             </div>
                         )
                     }
@@ -122,7 +132,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         inserePagamento : (pagamento) => {dispatch(inserePagamento(pagamento))},
-        setValorCampo: (campo, valor) => {dispatch(setValorCampo(campo, valor))}
+        setValorCampo: (campo, valor) => {dispatch(setValorCampo(campo, valor))},
+        removeMsg: () => {dispatch(limpaMsg())}
     }
     
 }
