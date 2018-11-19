@@ -64,10 +64,11 @@ export class ListaPagamentos extends Component {
                 {   
                     this.props.listaPagamentos.erro &&(
                         <div className="ui negative message transition">
-                            <i className="close icon"></i>
-                        <div className="header">
-                           Não foi possível obter a lista de pagamentos
-                        </div>
+                            <div className="header">
+                                Não foi possível obter a lista de pagamentos 
+                                <i style={{float: "right", cursor: 'pointer'}} title="Tentar de novo"
+                                    onClick={this.props.buscaListaPagamentos} className="redo icon"></i>
+                            </div>
                         </div>
                     )
                 }
