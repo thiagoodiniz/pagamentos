@@ -1,39 +1,20 @@
-import React, { Component } from 'react';
-import './css/pure-min.css';
-import './css/side-menu.css';
-import {Link} from 'react-router-dom';
+import React, {Component} from 'react';
+import FormPagamentos    from './componentes/FormPagamentos';
+import ListaPagamentos from './componentes/ListaPagamentos';
+import {Provider} from 'react-redux';
+import store from './store';
 
-class App extends Component {
-
-  render() {
-    return (
-      <div id="layout">
-      <a href="menu" id="menuLink" className="menu-link">
-          <span></span>
-      </a>
-  
-      <div id="menu">
-          <div className="pure-menu">  
-              <ul className="pure-menu-list">
-                  <li className="pure-menu-item"><Link to="/" className="pure-menu-link">Home</Link></li>
-  
-                  <li className="pure-menu-item">
-                      <Link to="/pagamentos" className="pure-menu-link">Pagamentos</Link>
-                  </li>
-  
-              </ul>
-          </div>
-      </div>
-  
-    <div id="main">
-        
-        {this.props.children}
-
-    </div>
-  </div>
-
-    );
-  }
+class PagamentosRedux extends Component {
+    render(){
+        return(
+           <Provider store={store}>
+            <div className='container'>
+                <FormPagamentos/>
+                <ListaPagamentos/>
+            </div>
+           </Provider>            
+        )
+    }
 }
 
-export default App;
+export default PagamentosRedux;
