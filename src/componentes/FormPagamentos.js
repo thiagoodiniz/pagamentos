@@ -41,40 +41,39 @@ export class FormPagamentos extends Component {
         return(
             <div className='form-pagamentos'>
                 <h1>Cadastrar Pagamento</h1>
-                <Form size='small'>
+                <Form>
                     <Form.Group>
-                    <Form.Field 
-                        error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.forma_pagamento')}
-                        control={Select}
-                        options={opcoesPagamento}
-                        label={{ children: 'Forma de Pagamento', htmlFor: 'forma_pagamento' }}
-                        placeholder='Selecione...'
-                        searchInput='forma_pagamento'
-                        value={this.props.alteraForm.pagamento.forma_pagamento}
-                        onChange={this.selectFormaPagamento}
-                    />
-                    <Form.Field
-                        error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.moeda')}
-                        control={Select}
-                        options={tiposMoedas}
-                        label={{ children: 'Moeda', htmlFor: 'moeda' }}
-                        placeholder='Selecione...'
-                        id='moeda'
-                        value={this.props.alteraForm.pagamento.moeda}
-                        onChange={this.selectMoeda}
-                    />
-                    <Form.Field
-                        error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.valor')}
-                        id='valor'
-                        control={Input}
-                        label='Valor'
-                        placeholder='Digite o valor'
-                        value={this.props.alteraForm.pagamento.valor}
-                        onChange={this.setValorCampo}
-                    />
+                        <Form.Field 
+                            error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.forma_pagamento')}
+                            control={Select}
+                            options={opcoesPagamento}
+                            label={{ children: 'Forma de Pagamento', htmlFor: 'forma_pagamento' }}
+                            placeholder='Selecione...'
+                            searchInput='forma_pagamento'
+                            value={this.props.alteraForm.pagamento.forma_pagamento}
+                            onChange={this.selectFormaPagamento}
+                        />
+                        <Form.Field
+                            error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.moeda')}
+                            control={Select}
+                            options={tiposMoedas}
+                            label={{ children: 'Moeda', htmlFor: 'moeda' }}
+                            placeholder='Selecione...'
+                            id='moeda'
+                            value={this.props.alteraForm.pagamento.moeda}
+                            onChange={this.selectMoeda}
+                        />
+                        <Form.Field
+                            error={this.props.inserePagamentosState.erros.camposComErro.includes('pagamento.valor')}
+                            id='valor'
+                            control={Input}
+                            label='Valor'
+                            placeholder='Digite o valor'
+                            value={this.props.alteraForm.pagamento.valor}
+                            onChange={this.setValorCampo}
+                        />
                     </Form.Group>
                     <Form.Field
-                        width='7'
                         id='descricao'
                         control={TextArea}
                         label='Descrição do pagamento'  
@@ -89,7 +88,7 @@ export class FormPagamentos extends Component {
                     }
                     {   
                         this.props.inserePagamentosState.erro &&(
-                            <div className="ui negative message transition" style={{width: '65%'}}>
+                            <div className="ui negative message transition">
                                 <i className="close icon" onClick={this.props.removeMsg}></i>
                                 <div className="header">
                                     Ocorreu um erro ao inserir o pagamento.
@@ -103,7 +102,7 @@ export class FormPagamentos extends Component {
                         )
                     }
                     {   this.props.inserePagamentosState.msg && (
-                            <div className="ui info message" style={{width: '65%'}}>
+                            <div className="ui info message">
                                 <i className="close icon" onClick={this.props.removeMsg}></i>
                                 <div className="header">
                                     {this.props.inserePagamentosState.msg}
