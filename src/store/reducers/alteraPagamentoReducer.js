@@ -29,9 +29,7 @@ export function alteraPagamento(state = INITIAL_STATE, action){
         
         case 'LIMPA_STATE':
             return {
-                carregando: false,
-                erro: false,
-                msg: ''
+                ...INITIAL_STATE
             }
 
         default: return state; 

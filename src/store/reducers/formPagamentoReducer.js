@@ -52,12 +52,7 @@ export function alteraForm(state = INITIAL_STATE, action){
          
         case 'LIMPA_FORM':
             return {
-                pagamento: {
-                    forma_pagamento: '',
-                    moeda: '',
-                    valor: '',
-                    descricao: ''
-                }
+                ...INITIAL_STATE
             }
             
         default: return state
